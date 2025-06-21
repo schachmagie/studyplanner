@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chess Study Planner</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Chess Study Planner</h1>
+            <button id="theme-toggle">🌙</button>
+        </header>
+        
+        <section class="study-plan">
+            <h2>Create Your Study Plan</h2>
+            <form id="study-form">
+                <input type="text" id="topic" placeholder="Enter study topic" required>
+                <select id="category">
+                    <option value="opening">Opening</option>
+                    <option value="tactics">Tactics</option>
+                    <option value="endgame">Endgame</option>
+                    <option value="strategy">Strategy</option>
+                </select>
+                <input type="number" id="time" placeholder="Time (minutes)" min="15" required>
+                <button type="submit">Add to Plan</button>
+            </form>
+            
+            <div class="plan-list">
+                <h3>Your Study Plan</h3>
+                <ul id="plan-items"></ul>
+            </div>
+        </section>
+        
+        <section class="progress">
+            <h2>Study Progress</h2>
+            <div class="progress-chart">
+                <canvas id="progress-chart"></canvas>
+            </div>
+        </section>
+    </div>
+    
+    <script src="app.js"></script>
+</body>
+</html>
