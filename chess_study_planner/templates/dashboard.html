@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="dashboard-header">
+    <h2>Your Chess Study Plan</h2>
+    <p class="week-range">Week of {{ week_start.strftime('%B %d, %Y') }}</p>
+</div>
+
+<div class="weekly-plan">
+    <h3>Weekly Goals</h3>
+    <form method="POST" action="{{ url_for('save_weekly_plan') }}">
+        <input type="hidden" name="week_start" value="{{ week_start }}">
+        <div class="form-group">
+            <label for="weekly_goal">Weekly Goal</label>
+            <textarea id="weekly_goal" name="weekly_goal" rows="3">{% if weekly_plan %}{{ weekly_plan['weekly_goal'] }}{% endif %}</textarea>
+        </div>
+        <div class="form-group">
+            <label for="efficiency_action">Efficiency Action</label>
+            <textarea id="efficiency_action" name="efficiency_action" rows="3">{% if weekly_plan %}{{ weekly_plan['efficiency_action'] }}{% endif %}</textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Save Weekly Plan</button>
+    </form>
+</div>
+
+<div class="daily-plans">
+    <h3>Daily Entries</h3>
+    <div class="days-grid">
+        {% for day in days %}
+        <div class="day-card">
+            <h4>{{ day['date'].strftime('%A, %b %d') }}</h4>
+            <form method="POST" action="{{ url_for('save_daily_entry') }}">
+                <input type="hidden" name="entry_date" value="{{ day['date'] }}">
+                <div class="form-group">
+                    <label for="study_time_{{ loop.index }}">Study Time (minutes)</label>
+                    <input type="number" id="study_time_{{ loop.index }}" name="study_time" 
+                           value="{% if day['entry'] %}{{ day['entry']['study_time'] }}{% endif %}">
+                </div>
+                <div class="form-group">
+                    <label for="learning_summary_{{ loop.index }}">Learning Summary</label>
+                    <textarea id="learning_summary_{{ loop.index }}" name="learning_summary" rows="3">
+                        {% if day['entry'] %}{{ day['entry']['learning_summary'] }}{% endif %}
+                    </textarea>
+                </div>
+                <div class="form-group">
+                    <label for="focus_score_{{ loop.index }}">Focus Score (1-10)</label>
+                    <input type="number" id="focus_score_{{ loop.index }}" name="focus_score" 
+                           min="1" max="10" 
+                           value="{% if day['entry'] %}{{ day['entry']['focus_score'] }}{% endif %}">
+                </div>
+                <div class="form-group">
+                    <label for="suggestion_{{ loop.index }}">Suggestion to Future Self</label>
+                    <textarea id="suggestion_{{ loop.index }}" name="suggestion" rows="3">
+                        {% if day['entry'] %}{{ day['entry']['suggestion'] }}{% endif %}
+                    </textarea>
+                </div>
+                <button type="submit" class="btn btn-secondary">Save Day</button>
+            </form>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
